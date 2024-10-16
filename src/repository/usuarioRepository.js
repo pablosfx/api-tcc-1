@@ -2,7 +2,7 @@ import con from "./connection.js";
 
 export async function inseriradm(pessoa) {
     const comando = `
-    insert into admin (usuario,senha)
+    insert into tb_admin (usuario,senha)
     values    (?,?);
     `;
     
