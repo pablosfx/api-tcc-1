@@ -1,14 +1,14 @@
-import * as db from '../repository/enderecoRepository.js';
+import * as db from '../repository/pedidosRepository.js';
 import { Router } from "express";
 
 
 const endpoints = Router();
 
-endpoints.post('/endereco', async (req, resp) => {
+endpoints.post('/pedidos', async (req, resp) => {
     try {
-        let endereco = req.body;
+        let pedidos = req.body;
 
-        let id = await db.inserirendereco(endereco);
+        let id = await db.inserirpedidos(pedidos);
 
         resp.status(201).send({
             novoId: id
