@@ -1,4 +1,4 @@
-import usuarioController from './controller/usuarioController.js'
+import usuarioController from './controller/usuarioContoller.js'
 import clienteRepository from './controller/clienteController.js'
 
 
