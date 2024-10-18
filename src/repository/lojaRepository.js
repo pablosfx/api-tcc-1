@@ -9,9 +9,9 @@ export async function inserirloja(loja) {
     `;
     
     let resposta = await con.query(comando, [loja.nm_produto,loja.qtd_produto,loja.valor,loja.id_produto,loja.id_cliente,loja.id_pedido])
-    let info = resposta[0];
+    let tcc = resposta[0];
     
-    return info.insertId;
+    return tcc.insertId;
 }
 
 

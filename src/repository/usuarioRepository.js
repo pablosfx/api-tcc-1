@@ -7,9 +7,9 @@ export async function inseriradm(pessoa) {
     `;
     
     let resposta = await con.query(comando, [pessoa.usuario, pessoa.senha])
-    let info = resposta[0];
+    let tcc = resposta[0];
     
-    return info.insertId;
+    return tcc.insertId;
 }
 
 

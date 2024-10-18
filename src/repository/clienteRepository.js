@@ -7,9 +7,9 @@ values  (?,?,?,?);
     `;
     
     let resposta = await con.query(comando, [clientes.email, clientes.senha, clientes.nm_cliente, clientes.telefone])
-    let info = resposta[0];
+    let tcc = resposta[0];
     
-    return info.insertId;
+    return tcc.insertId;
 }
 
 
