@@ -17,7 +17,7 @@ endpoints.post('/usuario', async (req, resp) => {
         resp.status(400).send({
             erro: err.message,
             stack: err.stack 
-        });
+    });
     }
 });
 
