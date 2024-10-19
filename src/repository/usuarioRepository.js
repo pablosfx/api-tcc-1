@@ -2,14 +2,15 @@ import con from "./connection.js";
 
 export async function inseriradm(pessoa) {
     const comando = `
-    insert into tb_admin (usuario,senha)
-    values    (?,?);
+        INSERT INTO admin (usuario, senha)
+        VALUES (?, ?);
     `;
     
-    let resposta = await con.query(comando, [pessoa.usuario, pessoa.senha])
-    let tcc = resposta[0];
-    
-    return tcc.insertId;
+    try {
+        let resposta = await con.query(comando, [pessoa.usuario, pessoa.senha]);
+        return resposta[0].insertId; // Verifique se `resposta[0]` é válido
+    } catch (err) {
+        console.error("Erro ao inserir administrador:", err);
+        throw new Error("Não foi possível inserir o administrador.");
+    }
 }
-
-
