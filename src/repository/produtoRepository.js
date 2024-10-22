@@ -87,7 +87,7 @@ export async function  consultarProduto() {
 export async function removerProduto(id) {
     const comando = `
         delete from produtos
-        where marca = ?;
+        where id_produto = ?;
         `
 
         let resposta = await con.query(comando, [id]);
@@ -110,7 +110,7 @@ let resposta = await con.query(comando, [produto.nm_produto, produto.marca, prod
 let registros = resposta[0];
 
  return registros.affectedRows;
-    }
+}
 
 
 

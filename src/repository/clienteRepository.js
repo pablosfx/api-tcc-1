@@ -1,7 +1,6 @@
 import con from "./connection.js";
 
 
-
 export async function inserirclientes(clientes) {
     const comando = `
 insert into clientes(email, senha, nm_cliente, telefone)
@@ -32,14 +31,13 @@ export async function  consultarClientes () {
 export async function removerCliente (id) {
     const comando = `
         delete from clientes
-        where telefone = ?
+        where id_cliente = ?;
         `
 
         let resposta = await con.query(comando, [id]);
         let registros = resposta[0];
  
          return registros.affectedRows;
-    
 }
 
 export async function alterarCliente (id, cliente) {

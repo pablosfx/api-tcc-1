@@ -1,11 +1,7 @@
 import con from "./connection.js";
 
-
-
 export async function inserirendereco(endereco) {
     const comando = `
-
-
     insert into endereco(id_cliente,pais,estado,cidade,cep)
     values (?,?,?,?,?);
     `;
@@ -35,7 +31,7 @@ export async function  consultarEndereco() {
 export async function removerEndereco(id) {
     const comando = `
         delete from endereco
-        where pais = ?;
+        where id_endereco = ?;
         `
 
         let resposta = await con.query(comando, [id]);
@@ -59,5 +55,5 @@ let resposta = await con.query(comando, [endereco.id_cliente, endereco.pais, end
 let registros = resposta[0];
 
  return registros.affectedRows;
-    }
+}
 
