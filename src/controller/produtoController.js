@@ -34,7 +34,7 @@ endpoints.get ('/produto', async (req, resp) => {
     }
 })
 
-endpoints.delete('/produto/:tamanho', async (req, resp) => {
+endpoints.delete('/produto/:id', async (req, resp) => {
     try {
         let id = req.params.id;
         let linha = await db.removerProduto(id);
@@ -52,7 +52,7 @@ endpoints.delete('/produto/:tamanho', async (req, resp) => {
     }
 })
 
-endpoints.put ('/produto/:tamanho', async (req, resp) => {
+endpoints.put ('/produto/:id', async (req, resp) => {
     try {
         let id = req.params.id;
         let produto = req.body;

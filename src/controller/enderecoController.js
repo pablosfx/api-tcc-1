@@ -34,7 +34,7 @@ endpoints.get ('/endereco', async (req, resp) => {
     }
 })
 
-endpoints.delete('/endereco/:cidade', async (req, resp) => {
+endpoints.delete('/endereco/:id', async (req, resp) => {
     try {
         let id = req.params.id;
         let linha = await db.removerEndereco(id);
@@ -52,7 +52,7 @@ endpoints.delete('/endereco/:cidade', async (req, resp) => {
     }
 })
 
-endpoints.put ('/endereco/:estado', async (req, resp) => {
+endpoints.put ('/endereco/:id', async (req, resp) => {
     try {
         let id = req.params.id;
         let endereco = req.body;
