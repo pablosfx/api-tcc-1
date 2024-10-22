@@ -5,7 +5,7 @@ import { Router } from "express";
 const endpoints = Router();
 
 
-endpoints.post('/produto', async (req, resp) => {
+endpoints.post('/produtos', async (req, resp) => {
     try {
         let produto = req.body;
 
@@ -22,7 +22,7 @@ endpoints.post('/produto', async (req, resp) => {
     }
 });
 
-endpoints.get ('/produto', async (req, resp) => {
+endpoints.get ('/produtos', async (req, resp) => {
     try {
         let produto = await db.consultarProduto();
         resp.send(produto)
@@ -34,7 +34,7 @@ endpoints.get ('/produto', async (req, resp) => {
     }
 })
 
-endpoints.delete('/produto/:id', async (req, resp) => {
+endpoints.delete('/produtos/:id', async (req, resp) => {
     try {
         let id = req.params.id;
         let linha = await db.removerProduto(id);
@@ -52,7 +52,7 @@ endpoints.delete('/produto/:id', async (req, resp) => {
     }
 })
 
-endpoints.put ('/produto/:id', async (req, resp) => {
+endpoints.put ('/produtos/:id', async (req, resp) => {
     try {
         let id = req.params.id;
         let produto = req.body;
