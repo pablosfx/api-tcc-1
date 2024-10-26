@@ -1,12 +1,11 @@
 import con from "./connection.js";
 
-export async function inserirpedidos(pedidos) {
+export async function inserirPedidos(pedidos) {
     const comando = `
-        insert into pedidos(id_cliente,id_produto,id_endereco,data_pedido)
-            values (?,?,?,?)
-`;
+        insert into pedidos (id_cliente, id_produto, id_endereco, data_pedido)
+        values (?, ?, ?, ?)`;
     
-    let resposta = await con.query(comando, [pedidos.id_cliente,pedidos.id_produto,pedidos.id_endereco,pedidos.data_pedido])
+    let resposta = await con.query(comando, [pedidos.cliente, pedidos.produto, pedidos.endereco, pedidos.data])
     let tcc = resposta[0];
     
     return tcc.insertId;
@@ -19,8 +18,8 @@ export async function  consultarPedidos() {
         id_produto    produto,
         id_endereco   endereco,
         data_pedido   data
-    from pedidos;
-       `
+    from pedidos
+       `;
        let resposta = await con.query(comando);
        let registros = resposta[0];
 

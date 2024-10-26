@@ -1,32 +1,28 @@
 import * as db from '../repository/pedidosRepository.js';
 import { Router } from "express";
-
-
 const endpoints = Router();
 
-
-
-endpoints.post('/pedidos', async (req, resp) => {
+endpoints.post('/pedidos/', async (req, resp) => {
     try {
         let pedidos = req.body;
 
-        let id = await db.inserirpedidos(pedidos);
+        let id = await db.inserirPedidos(pedidos);
 
-        resp.status(201).send({
+        resp.send({
             novoId: id
-        });
-    } catch (err) {
+        })
+    } 
+    catch (err) {
         resp.status(400).send({
-            erro: err.message,
-            stack: err.stack 
-        });
+            erro: err.message   
+        })
     }
 });
 
-endpoints.get ('/pedidos', async (req, resp) => {
+endpoints.get ('/pedidos/', async (req, resp) => {
     try {
         let pedidos = await db.consultarPedidos();
-        resp.send(pedidos)
+        resp.send(pedidos);
     }
     catch (erro) {
         resp.status(400).send ({
@@ -72,6 +68,5 @@ endpoints.put ('/pedidos/:id', async (req, resp) => {
             })
         }
     })
-
 
 export default endpoints;

@@ -1,7 +1,5 @@
 import * as db from '../repository/produtoRepository.js';
 import { Router } from "express";
-
-
 const endpoints = Router();
 
 

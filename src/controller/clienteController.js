@@ -1,7 +1,6 @@
 import * as db from '../repository/clienteRepository.js';
 import { Router } from "express";
 
-
 import { autenticar } from '../utils/jwt.js';
 
 

@@ -1,9 +1,6 @@
 import * as db from '../repository/enderecoRepository.js';
 import { Router } from "express";
-
-
 const endpoints = Router();
-
 
 endpoints.post('/endereco', async (req, resp) => {
     try {
