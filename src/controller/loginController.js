@@ -2,10 +2,11 @@ import * as db from '../repository/loginrepository.js';
 import { Router } from "express";
 
 import { gerarToken } from '../utils/jwt.js';
+import { autenticar } from '../utils/jwt.js';
 
 const endpoints = Router();
 
-endpoints.post('/login', async (req, resp) => {
+endpoints.post('/login', autenticar, async (req, resp) => {
     try {
         let usuario = req.body;
 
