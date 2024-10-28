@@ -1,11 +1,14 @@
 import * as db from '../repository/enderecoRepository.js';
 import { Router } from "express";
+
+import { autenticar } from '../utils/jwt.js';
+
 const endpoints = Router();
 
-endpoints.post('/endereco', async (req, resp) => {
+endpoints.post('/endereco', autenticar, async (req, resp) => {
     try {
         let endereco = req.body;
-
+        endereco.idEndereco = req.user.id;
         let id = await db.inserirendereco(endereco);
 
         resp.status(201).send({
@@ -19,9 +22,10 @@ endpoints.post('/endereco', async (req, resp) => {
     }
 });
 
-endpoints.get ('/endereco', async (req, resp) => {
+endpoints.get ('/endereco', autenticar, async (req, resp) => {
     try {
-        let endereco = await db.consultarEndereco();
+        let idEndereco = req.user.id;
+        let endereco = await db.consultarEndereco(idEndereco);
         resp.send(endereco)
     }
     catch (erro) {
@@ -31,7 +35,7 @@ endpoints.get ('/endereco', async (req, resp) => {
     }
 })
 
-endpoints.delete('/endereco/:id', async (req, resp) => {
+endpoints.delete('/endereco/:id', autenticar, async (req, resp) => {
     try {
         let id = req.params.id;
         let linha = await db.removerEndereco(id);
@@ -49,7 +53,7 @@ endpoints.delete('/endereco/:id', async (req, resp) => {
     }
 })
 
-endpoints.put ('/endereco/:id', async (req, resp) => {
+endpoints.put ('/endereco/:id', autenticar, async (req, resp) => {
     try {
         let id = req.params.id;
         let endereco = req.body;

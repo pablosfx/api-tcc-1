@@ -1,31 +1,38 @@
-import * as db from '../repository/pedidosRepository.js';
+import * as db from '../repository/loginrepository.js';
 import { Router } from "express";
 
-import { autenticar } from '../utils/jwt.js';
+import { gerarToken } from '../utils/jwt.js';
+
 const endpoints = Router();
 
-endpoints.post('/pedidos/', autenticar, async (req, resp) => {
+endpoints.post('/login', async (req, resp) => {
     try {
-        let pedidos = req.body;
-        pedidos.idPedidos = req.user.id;
-        let id = await db.inserirPedidos(pedidos);
+        let usuario = req.body;
 
-        resp.send({
-            novoId: id
+        let id = await db.validarLogin(usuario);
+
+        if (id == null) {
+            resp.send({erro: "Usuário ou senha incorreto(s)"})
+        }
+     else {
+        let token = gerarToken(id);
+        resp.send ({
+        "token" : token
         })
     } 
+    }  
     catch (err) {
         resp.status(400).send({
-            erro: err.message   
-        })
+            erro: err.message
+    })
     }
 });
 
-endpoints.get ('/pedidos/', autenticar, async (req, resp) => {
+endpoints.get ('/login/', autenticar, async (req, resp) => {
     try {
-        let idPedidos = req.user.id;
-        let pedidos = await db.consultarPedidos(idPedidos);
-        resp.send(pedidos);
+        let idLogin = req.user.id;
+        let login = await db.consultarLogin(idLogin);
+        resp.send(login);
     }
     catch (erro) {
         resp.status(400).send ({
@@ -34,10 +41,10 @@ endpoints.get ('/pedidos/', autenticar, async (req, resp) => {
     }
 })
 
-endpoints.delete('/pedidos/:id', autenticar, async (req, resp) => {
+endpoints.delete('/login/:id', autenticar, async (req, resp) => {
     try {
         let id = req.params.id;
-        let linha = await db.removerPedido(id);
+        let linha = await db.removerLogin(id);
         if(linha >= 1){
             resp.send();
         }
@@ -52,12 +59,12 @@ endpoints.delete('/pedidos/:id', autenticar, async (req, resp) => {
     }
 })
 
-endpoints.put ('/pedidos/:id', autenticar, async (req, resp) => {
+endpoints.put ('/login/:id', autenticar, async (req, resp) => {
     try {
         let id = req.params.id;
-        let pedidos = req.body;
+        let login = req.body;
 
-        let linhas = await db.alterarPedido (id, pedidos);
+        let linhas = await db.alterarLogin (id, login);
         if (linhas >= 1) {
             resp.send();
         }

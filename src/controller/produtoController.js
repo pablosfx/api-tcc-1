@@ -1,12 +1,15 @@
 import * as db from '../repository/produtoRepository.js';
 import { Router } from "express";
+
+import { autenticar } from '../utils/jwt.js';
+
 const endpoints = Router();
 
 
-endpoints.post('/produtos', async (req, resp) => {
+endpoints.post('/produtos', autenticar, async (req, resp) => {
     try {
         let produto = req.body;
-
+        produto.idProdutos = req.user.id;
         let id = await db.inserirproduto(produto);
 
         resp.status(201).send({
@@ -20,9 +23,10 @@ endpoints.post('/produtos', async (req, resp) => {
     }
 });
 
-endpoints.get ('/produtos', async (req, resp) => {
+endpoints.get ('/produtos', autenticar, async (req, resp) => {
     try {
-        let produto = await db.consultarProduto();
+        let idProdutos = req.user.id;
+        let produto = await db.consultarProduto(idProdutos);
         resp.send(produto)
     }
     catch (erro) {
@@ -32,7 +36,7 @@ endpoints.get ('/produtos', async (req, resp) => {
     }
 })
 
-endpoints.delete('/produtos/:id', async (req, resp) => {
+endpoints.delete('/produtos/:id', autenticar, async (req, resp) => {
     try {
         let id = req.params.id;
         let linha = await db.removerProduto(id);
@@ -50,7 +54,7 @@ endpoints.delete('/produtos/:id', async (req, resp) => {
     }
 })
 
-endpoints.put ('/produtos/:id', async (req, resp) => {
+endpoints.put ('/produtos/:id', autenticar, async (req, resp) => {
     try {
         let id = req.params.id;
         let produto = req.body;

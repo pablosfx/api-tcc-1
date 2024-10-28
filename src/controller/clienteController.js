@@ -7,9 +7,10 @@ import { autenticar } from '../utils/jwt.js';
 const endpoints = Router();
 
 
-endpoints.post('/clientes', async (req, resp) => {
+endpoints.post('/clientes', autenticar, async (req, resp) => {
     try {
         let clientes = req.body;
+        clientes.idUsuario = req.user.id;
 
         let id = await db.inserirclientes(clientes);
 
@@ -24,9 +25,10 @@ endpoints.post('/clientes', async (req, resp) => {
     }
 });
 
-endpoints.get ('/clientes', async (req, resp) => {
+endpoints.get ('/clientes', autenticar, async (req, resp) => {
     try {
-        let clientes = await db.consultarClientes();
+        let idUsuario = req.user.id;
+        let clientes = await db.consultarClientes(idUsuario);
         resp.send(clientes)
     }
     catch (erro) {
@@ -36,7 +38,7 @@ endpoints.get ('/clientes', async (req, resp) => {
     }
 })
 
-endpoints.delete('/clientes/:id', async (req, resp) => {
+endpoints.delete('/clientes/:id', autenticar, async (req, resp) => {
     try {
         let id = req.params.id;
         let linha = await db.removerCliente(id);
@@ -54,7 +56,7 @@ endpoints.delete('/clientes/:id', async (req, resp) => {
     }
 })
 
-endpoints.put ('/clientes/:id', async (req, resp) => {
+endpoints.put ('/clientes/:id', autenticar, async (req, resp) => {
     try {
         let id = req.params.id;
         let clientes = req.body;
