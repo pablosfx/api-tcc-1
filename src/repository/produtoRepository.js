@@ -16,7 +16,6 @@ let registros = resposta[0];
 return registros.affectedRows;
 }
 
-
 export async function inserirproduto(produto) {
 const comando = `
     insert into produtos (nm_produto,marca,tamanho,valor)
