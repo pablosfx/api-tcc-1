@@ -37,8 +37,7 @@ export async function removerEndereco(id) {
         let resposta = await con.query(comando, [id]);
         let registros = resposta[0];
  
-         return registros.affectedRows;
-    
+         return registros.affectedRows; 
 }
 
 export async function alterarEndereco(id, endereco) {
