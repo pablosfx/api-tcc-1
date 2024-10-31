@@ -20,7 +20,7 @@ select id_produto  produto,
     from produtos;
     
     delete from produtos
-        where marca = ?;
+        where id_produto = ?;
         
 		update produtos
             set nm_produto = ?,
@@ -46,7 +46,7 @@ select id_cliente id,
     from clientes;
     
     delete from clientes
-        where telefone = ?;
+        where id_cliente = ?;
         
         update clientes
             set email  = ?,
@@ -77,7 +77,7 @@ select id_endereco  endereco,
     from endereco;
     
     delete from endereco
-        where pais = ?;
+        where id_endereco = ?;
         
 		update endereco
             set id_cliente  = ?,
@@ -111,7 +111,7 @@ select id_pedido  pedido,
     from pedidos;
     
     delete from pedidos
-        where id_produto = ?;
+        where id_pedido = ?;
         
          update pedidos
             set id_cliente  = ?,
