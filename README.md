@@ -20,7 +20,7 @@ select id_produto  produto,
     from produtos;
     
     delete from produtos
-        where marca = ?;
+        where id_produto = ?;
         
 		update produtos
             set nm_produto = ?,
@@ -46,7 +46,7 @@ select id_cliente id,
     from clientes;
     
     delete from clientes
-        where telefone = ?;
+        where id_cliente = ?;
         
         update clientes
             set email  = ?,
@@ -77,7 +77,7 @@ select id_endereco  endereco,
     from endereco;
     
     delete from endereco
-        where pais = ?;
+        where id_endereco = ?;
         
 		update endereco
             set id_cliente  = ?,
@@ -111,7 +111,7 @@ select id_pedido  pedido,
     from pedidos;
     
     delete from pedidos
-        where id_produto = ?;
+        where id_pedido = ?;
         
          update pedidos
             set id_cliente  = ?,
@@ -144,3 +144,77 @@ select id_pedido  pedido,
         set email = ?,
             senha = ?
             where id_login = ?;
+            
+insert into pesquisa (id_produto, id_pedido)
+values (?, ?);
+
+  select id_pesquisa  pesquisa,
+	   id_produto   produto,
+       id_pedido    pedido
+       from pesquisa; 
+       
+delete from pesquisa
+	        where id_pesquisa = ?;
+            
+update pesquisa
+            set id_produto = ?,
+		        id_pedido = ?
+          where id_pesquisa = ?;
+          
+create table carrinho (
+id int primary key auto_increment,
+id_cliente int,
+id_produto int,
+id_status int,
+data_criacao datetime,
+quantidade int,
+preco_unitario decimal (10, 2),
+subtotal decimal (10, 2),
+foreign key (id_cliente) references clientes (id_cliente),
+foreign key (id_produto) references produtos (id_produto),
+foreign key (id_status) references status (id_status)
+);
+
+insert into carrinho (id_cliente, id_produto, id_status, data_criacao, quantidade, preco_unitario, subtotal)
+values (?, ?, ?, ?, ?, ?, ?);
+
+select id  id,
+		id_cliente  cliente,
+        id_produto  produto,
+        id_status  status,
+        data_criacao  criacao,
+        quantidade  quantidade,
+        preco_unitario  preco,
+        subtotal  subtotal
+        from carrinho;
+        
+delete from carrinho
+where id = ?;
+
+update carrinho
+set id_cliente = ?,
+id_produto = ?,
+id_status = ?,
+data_criacao = ?,
+quantidade = ?,
+preco_unitario = ?,
+subtotal = ?
+where id = ?;
+
+create table status (
+id_status int primary key auto_increment,
+status varchar (50) unique not null
+);
+
+insert into status (status) 
+values (?);
+
+select status  status
+from status;
+
+delete from status
+where id_status = ?;
+
+update status
+set status = ?
+where id_status = ?;
