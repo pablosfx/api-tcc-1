@@ -35,8 +35,8 @@ nm_cliente varchar(100),
 telefone varchar(100)
 );
 
-insert into clientes (email, senha, nm_cliente, telefone)
-values  (?,?,?,?);
+insert into clientes (nm_cliente, telefone)
+values  (?, ?);
 
 select id_cliente id,
        email  email,
@@ -137,6 +137,9 @@ select id_pedido  pedido,
     senha  senha
     from login;
     
+    select id_login  id
+    from login;
+    
       delete from login
         where id_login = ?;
         
@@ -172,7 +175,7 @@ preco_unitario decimal (10, 2),
 subtotal decimal (10, 2),
 foreign key (id_cliente) references clientes (id_cliente),
 foreign key (id_produto) references produtos (id_produto),
-foreign key (id_status) references status (id_status)
+foreign key (id_status) references status_produto (id_status)
 );
 
 insert into carrinho (id_cliente, id_produto, id_status, data_criacao, quantidade, preco_unitario, subtotal)
@@ -201,20 +204,20 @@ preco_unitario = ?,
 subtotal = ?
 where id = ?;
 
-create table status (
+create table status_produto (
 id_status int primary key auto_increment,
 status varchar (50) unique not null
 );
 
-insert into status (status) 
+insert into status_produto (status) 
 values (?);
 
-select status  status
+select status  status_produto
 from status;
 
-delete from status
+delete from status_produto
 where id_status = ?;
 
-update status
+update status_produto
 set status = ?
 where id_status = ?;
