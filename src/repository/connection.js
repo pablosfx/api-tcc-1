@@ -21,5 +21,5 @@ const con = await mysql.createConnection({
     }
 })
 
-console.log('-->DB conectad <--');
+console.log('--> DB conectada <--');
 export default con;

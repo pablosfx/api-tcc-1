@@ -19,8 +19,7 @@ endpoints.post('/clientes', autenticar, async (req, resp) => {
         });
     } catch (err) {
         resp.status(400).send({
-            erro: err.message,
-            stack: err.stack 
+            erro: err.message
         });
     }
 });
@@ -75,8 +74,5 @@ endpoints.put ('/clientes/:id', autenticar, async (req, resp) => {
             })
         }
     })
-
-
-
 
 export default endpoints;
