@@ -2,11 +2,11 @@ import con from './connection.js';
 
 export async function inserirCarrinho(carrinho) {
     const comando = `
-    insert into carrinho (id_cliente, id_produto, id_status, data_criacao, quantidade, preco_unitario, subtotal)
+    insert into carrinho (idProduto, idStatus, dataCriacao, quantidade, precoUnitario, subtotal)
         values (?, ?, ?, ?, ?, ?, ?);
     `;
     
-    let resposta = await con.query(comando, [carrinho.id_cliente, carrinho.id_produto, carrinho.id_status, carrinho.data_criacao, carrinho.quantidade, carrinho.preco_unitario, carrinho.subtotal])
+    let resposta = await con.query(comando, [carrinho.idProduto, carrinho.idStatus, carrinho.dataCriacao, carrinho.quantidade, carrinho.precoUnitario, carrinho.subtotal])
     let tcc = resposta[0];
     
     return tcc.insertId;
@@ -15,12 +15,11 @@ export async function inserirCarrinho(carrinho) {
 export async function  consultarCarrinho () {
     const comando = `
     select id  id,
-		id_cliente  cliente,
-        id_produto  produto,
-        id_status  status,
-        data_criacao  criacao,
+        idProduto  produto,
+        idStatus  status,
+        dataCriacao  criacao,
         quantidade  quantidade,
-        preco_unitario  preco,
+        precoUnitario  preco,
         subtotal  subtotal
         from carrinho;  
        `
@@ -45,16 +44,15 @@ export async function removerCarrinho (id) {
 export async function alterarCarrinho (id, carrinho) {
     const comando =`
        update carrinho
-        set id_cliente = ?,
-            id_produto = ?,
-            id_status = ?,
-            data_criacao = ?,
+        set idProduto = ?,
+            idStatus = ?,
+            dataCriacao = ?,
             quantidade = ?,
-            preco_unitario = ?,
+            precoUnitario = ?,
             subtotal = ?
             where id = ?;`
 
-let resposta = await con.query(comando, [carrinho.id_cliente, carrinho.id_produto, carrinho.id_status, carrinho.data_criacao, carrinho.quantidade, carrinho.subtotal, id]);
+let resposta = await con.query(comando, [carrinho.id_produto, carrinho.id_status, carrinho.data_criacao, carrinho.quantidade, carrinho.subtotal, id]);
 let registros = resposta[0];
 
 return registros.affectedRows;

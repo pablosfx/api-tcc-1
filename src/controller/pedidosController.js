@@ -6,7 +6,6 @@ const endpoints = Router();
 endpoints.post('/pedidos/', async (req, resp) => {
     try {
         let pedidos = req.body;
-        pedidos.idPedidos = req.user.id;
         let id = await db.inserirPedidos(pedidos);
 
         resp.send({

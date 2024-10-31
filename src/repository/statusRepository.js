@@ -2,7 +2,7 @@ import con from './connection.js';
 
 export async function inserirStatus (state) {
     const comando = `
-    insert into status_produto (status) 
+    insert into statusProduto (status) 
         values (?);
     `;
     
@@ -15,7 +15,7 @@ export async function inserirStatus (state) {
 export async function  consultarStatus () {
     const comando = `
     select status  status
-            from status_produto; 
+            from statusProduto; 
        `
        let resposta = await con.query(comando);
        let registros = resposta[0];
@@ -25,8 +25,8 @@ export async function  consultarStatus () {
 
 export async function removerStatus (id) {
     const comando = `
-        delete from status_produto
-        where id_status = ?;
+        delete from statusProduto
+        where idStatus = ?;
         `
 
         let resposta = await con.query(comando, [id]);
@@ -37,9 +37,9 @@ export async function removerStatus (id) {
 
 export async function alterarStatus (id, status) {
     const comando =`
-       update status_produto
+       update statusProduto
         set status = ?
-        where id_status = ?;`
+        where idStatus = ?;`
 
 let resposta = await con.query(comando, [status.status, id]);
 let registros = resposta[0];

@@ -4,13 +4,13 @@ import con from "./connection.js";
 export async function alterarproduto(id, produto) {
     const comando =`
     update produtos
-    set nm_produto = ?,
+    set nmProduto = ?,
     marca = ?,
     tamanho = ?,
     valor = ?
-    where id_produto = ?;`
+    where idProduto = ?;`
 
-let resposta = await con.query(comando, [produto.nm_produto, produto.marca, produto.tamanho, produto.valor, id]);
+let resposta = await con.query(comando, [produto.nmProduto, produto.marca, produto.tamanho, produto.valor, id]);
 let registros = resposta[0];
 
 return registros.affectedRows;
@@ -18,12 +18,12 @@ return registros.affectedRows;
 
 export async function inserirproduto(produto) {
 const comando = `
-    insert into produtos (nm_produto,marca,tamanho,valor)
-    values(?,?,?,?);
+    insert into produtos (nmProduto, marca, tamanho, valor)
+    values(?, ?, ?, ?);
     
     `;
     
-    let resposta = await con.query(comando,[produto.nm_produto, produto.marca, produto.tamanho, produto.valor])
+    let resposta = await con.query(comando,[produto.nmProduto, produto.marca, produto.tamanho, produto.valor])
     let tcc = resposta[0];
     
     return tcc.insertId;
@@ -31,8 +31,8 @@ const comando = `
 
 export async function  consultarProduto() {
     const comando = `
-    select id_produto  produto,
-        nm_produto     nome,
+    select idProduto  produto,
+        nmProduto     nome,
         marca          marca,
         tamanho        tamanho,
         valor          valor
@@ -47,7 +47,7 @@ export async function  consultarProduto() {
 export async function removerProduto(id) {
     const comando = `
         delete from produtos
-        where id_produto = ?;
+        where idProduto = ?;
         `
 
         let resposta = await con.query(comando, [id]);
@@ -60,23 +60,14 @@ export async function removerProduto(id) {
 export async function alterarProduto(id, produto) {
     const comando =`
          update produtos
-            set nm_produto = ?,
+            set nmProduto = ?,
             marca = ?,
             tamanho = ?,
             valor = ?
             where id_produto = ?;`
 
-let resposta = await con.query(comando, [produto.nm_produto, produto.marca, produto.tamanho, produto.valor, id]);
+let resposta = await con.query(comando, [produto.nmProduto, produto.marca, produto.tamanho, produto.valor, id]);
 let registros = resposta[0];
 
  return registros.affectedRows;
 }
-
-
-
-
-
-
-
-
-

@@ -2,10 +2,10 @@ import con from "./connection.js";
 
 export async function inserirPedidos(pedidos) {
     const comando = `
-        insert into pedidos (id_cliente, id_produto, id_endereco, data_pedido)
+        insert into pedidos (idProduto, idEndereco, idLogin, dataPedido)
         values (?, ?, ?, ?)`;
     
-    let resposta = await con.query(comando, [pedidos.cliente, pedidos.produto, pedidos.endereco, pedidos.data])
+    let resposta = await con.query(comando, [pedidos.idProduto, pedidos.idEndereco, pedidos.idLogin, pedidos.dataPedido])
     let tcc = resposta[0];
     
     return tcc.insertId;
@@ -13,11 +13,11 @@ export async function inserirPedidos(pedidos) {
 
 export async function  consultarPedidos() {
     const comando = `
-    select id_pedido  pedido,
-        id_cliente    cliente,
-        id_produto    produto,
-        id_endereco   endereco,
-        data_pedido   data
+    select idPedido  pedido,
+        idProduto    produto,
+        idEndereco   endereco,
+        idLogin      login,
+        dataPedido   data
     from pedidos
        `;
        let resposta = await con.query(comando);
@@ -29,7 +29,7 @@ export async function  consultarPedidos() {
 export async function removerPedido(id) {
     const comando = `
     delete from pedidos
-        where id_produto = ?;
+        where idProduto = ?;
         `
 
     let resposta = await con.query(comando, [id]);
@@ -42,13 +42,13 @@ export async function removerPedido(id) {
 export async function alterarPedido(id, pedido) {
     const comando =`
     update pedidos
-        set id_cliente  = ?,
-            id_produto = ?,
-            id_endereco = ?,
-            data_pedido = ?
-            where id_pedido = ?;`
+        set idProduto = ?,
+            idEndereco = ?,
+            idLogin = ?,
+            dataPedido = ?
+            where idPedido = ?;`
 
-    let resposta = await con.query(comando, [pedido.id_cliente, pedido.id_produto, pedido.id_endereco, pedido.data_pedido, id]);
+    let resposta = await con.query(comando, [pedido.idProduto, pedido.idEndereco, pedido.idLogin, pedido.dataPedido, id]);
     let registros = resposta[0];
 
     return registros.affectedRows;

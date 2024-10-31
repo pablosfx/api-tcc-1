@@ -6,7 +6,6 @@ const endpoints = Router();
 endpoints.post('/endereco', async (req, resp) => {
     try {
         let endereco = req.body;
-        endereco.idEndereco = req.user.id;
         let id = await db.inserirendereco(endereco);
 
         resp.status(201).send({
@@ -14,8 +13,7 @@ endpoints.post('/endereco', async (req, resp) => {
         });
     } catch (err) {
         resp.status(400).send({
-            erro: err.message,
-            stack: err.stack 
+            erro: err.message
         });
     }
 });

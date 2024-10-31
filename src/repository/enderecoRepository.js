@@ -2,11 +2,11 @@ import con from "./connection.js";
 
 export async function inserirendereco(endereco) {
     const comando = `
-    insert into endereco(id_cliente,pais,estado,cidade,cep)
-    values (?,?,?,?,?);
+    insert into endereco(idLogin, pais, estado, cidade, cep)
+    values (?, ?, ?, ?, ?);
     `;
     
-    let resposta = await con.query(comando, [endereco.id_cliente,endereco.pais,endereco.estado,endereco.cidade,endereco.cep])
+    let resposta = await con.query(comando, [endereco.idLogin, endereco.pais, endereco.estado, endereco.cidade, endereco.cep])
     let tcc = resposta[0];
     
     return tcc.insertId;
@@ -14,8 +14,8 @@ export async function inserirendereco(endereco) {
 
 export async function  consultarEndereco() {
     const comando = `
-    select id_endereco  endereco,
-        id_cliente      cliente,
+    select idEndereco  endereco,
+        idLogin        login,
         pais            pais,
         estado          estado,
         cidade          cidade,
@@ -31,28 +31,27 @@ export async function  consultarEndereco() {
 export async function removerEndereco(id) {
     const comando = `
         delete from endereco
-        where id_endereco = ?;
+        where idEndereco = ?;
         `
 
         let resposta = await con.query(comando, [id]);
         let registros = resposta[0];
  
-         return registros.affectedRows; 
+        return registros.affectedRows; 
 }
 
 export async function alterarEndereco(id, endereco) {
     const comando =`
          update endereco
-            set id_cliente  = ?,
+            set idLogin  = ?,
             pais = ?,
             estado = ?,
             cidade = ?,
             cep = ?
-            where id_endereco = ?;`
+            where idEndereco = ?;`
 
-let resposta = await con.query(comando, [endereco.id_cliente, endereco.pais, endereco.estado, endereco.cidade, endereco.cep, id]);
+let resposta = await con.query(comando, [endereco.idLogin, endereco.pais, endereco.estado, endereco.cidade, endereco.cep, id]);
 let registros = resposta[0];
 
  return registros.affectedRows;
 }
-
