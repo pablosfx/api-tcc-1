@@ -13,7 +13,7 @@ endpoints.post('/status', async (req, resp) => {
         novoId: id
     });
     } catch (err) {
-        resp.status(400).send({
+        resp.status(404).send({
             erro: err.message
         })
     }

@@ -5,6 +5,7 @@ import enderecoController from './controller/enderecoController.js';
 import loginController from './controller/loginController.js';
 import pesquisaController from './controller/pesquisaController.js';
 import carrinhoController from './controller/carrinhoController.js';
+import statusController from './controller/statusController.js';
 
 export default function adicionarRotas(servidor) {
     servidor.use(pedidosController);
@@ -14,4 +15,5 @@ export default function adicionarRotas(servidor) {
     servidor.use(loginController);
     servidor.use(pesquisaController);
     servidor.use(carrinhoController);
+    servidor.use(statusController);
 }

@@ -1,10 +1,9 @@
 import * as db from '../repository/pedidosRepository.js';
 import { Router } from "express";
 
-import { autenticar } from '../utils/jwt.js';
 const endpoints = Router();
 
-endpoints.post('/pedidos/', autenticar, async (req, resp) => {
+endpoints.post('/pedidos/', async (req, resp) => {
     try {
         let pedidos = req.body;
         pedidos.idPedidos = req.user.id;
@@ -21,7 +20,7 @@ endpoints.post('/pedidos/', autenticar, async (req, resp) => {
     }
 });
 
-endpoints.get ('/pedidos/', autenticar, async (req, resp) => {
+endpoints.get ('/pedidos/', async (req, resp) => {
     try {
         let idPedidos = req.user.id;
         let pedidos = await db.consultarPedidos(idPedidos);
@@ -34,7 +33,7 @@ endpoints.get ('/pedidos/', autenticar, async (req, resp) => {
     }
 })
 
-endpoints.delete('/pedidos/:id', autenticar, async (req, resp) => {
+endpoints.delete('/pedidos/:id', async (req, resp) => {
     try {
         let id = req.params.id;
         let linha = await db.removerPedido(id);
@@ -52,7 +51,7 @@ endpoints.delete('/pedidos/:id', autenticar, async (req, resp) => {
     }
 })
 
-endpoints.put ('/pedidos/:id', autenticar, async (req, resp) => {
+endpoints.put ('/pedidos/:id', async (req, resp) => {
     try {
         let id = req.params.id;
         let pedidos = req.body;

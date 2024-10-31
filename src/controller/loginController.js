@@ -1,7 +1,6 @@
 import * as db from '../repository/loginrepository.js';
 import { Router } from "express";
 
-import { gerarToken } from '../utils/jwt.js';
 import { autenticar } from '../utils/jwt.js';
 
 const endpoints = Router();
@@ -9,18 +8,12 @@ const endpoints = Router();
 endpoints.post('/login', autenticar, async (req, resp) => {
     try {
         let usuario = req.body;
-
+        usuario.idLogin = req.user.id;
         let id = await db.validarLogin(usuario);
 
-        if (id == null) {
-            resp.send({erro: "Usuário ou senha incorreto(s)"})
-        }
-     else {
-        let token = gerarToken(id);
         resp.send ({
-        "token" : token
+            novoId: id
         })
-    } 
     }  
     catch (err) {
         resp.status(400).send({
@@ -29,15 +22,28 @@ endpoints.post('/login', autenticar, async (req, resp) => {
     }
 });
 
-endpoints.get ('/login/', autenticar, async (req, resp) => {
+endpoints.get ('/login', autenticar, async (req, resp) => {
     try {
         let idLogin = req.user.id;
-        let login = await db.consultarLogin(idLogin);
+        let login = await db.consultarLoginPorId(idLogin);
         resp.send(login);
     }
-    catch (erro) {
+    catch (err) {
         resp.status(400).send ({
-            erro: erro.message
+            erro: err.message
+        })
+    }
+})
+
+endpoints.get ('/login/:id', autenticar, async (req, resp) => {
+    try {
+        let id = req.params.id;
+        let login = await db.consultarLogin(id);
+        resp.send(login[0]);
+    }
+    catch (err) {
+        resp.status(400).send ({
+            erro: err.message
         })
     }
 })
@@ -45,15 +51,16 @@ endpoints.get ('/login/', autenticar, async (req, resp) => {
 endpoints.delete('/login/:id', autenticar, async (req, resp) => {
     try {
         let id = req.params.id;
+
         let linha = await db.removerLogin(id);
         if(linha >= 1){
             resp.send();
         }
-        else{
+        else {
             resp.status(404).send({erro: 'Nenhum registro encontrado'})
         }
     }
-    catch(err){
+    catch(err) {
         resp.status(400).send({
             erro: err.message
         })

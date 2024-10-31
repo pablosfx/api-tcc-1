@@ -1,11 +1,9 @@
 import * as db from '../repository/enderecoRepository.js';
 import { Router } from "express";
 
-import { autenticar } from '../utils/jwt.js';
-
 const endpoints = Router();
 
-endpoints.post('/endereco', autenticar, async (req, resp) => {
+endpoints.post('/endereco', async (req, resp) => {
     try {
         let endereco = req.body;
         endereco.idEndereco = req.user.id;
@@ -22,7 +20,7 @@ endpoints.post('/endereco', autenticar, async (req, resp) => {
     }
 });
 
-endpoints.get ('/endereco', autenticar, async (req, resp) => {
+endpoints.get ('/endereco', async (req, resp) => {
     try {
         let idEndereco = req.user.id;
         let endereco = await db.consultarEndereco(idEndereco);
@@ -35,7 +33,7 @@ endpoints.get ('/endereco', autenticar, async (req, resp) => {
     }
 })
 
-endpoints.delete('/endereco/:id', autenticar, async (req, resp) => {
+endpoints.delete('/endereco/:id', async (req, resp) => {
     try {
         let id = req.params.id;
         let linha = await db.removerEndereco(id);
@@ -53,7 +51,7 @@ endpoints.delete('/endereco/:id', autenticar, async (req, resp) => {
     }
 })
 
-endpoints.put ('/endereco/:id', autenticar, async (req, resp) => {
+endpoints.put ('/endereco/:id', async (req, resp) => {
     try {
         let id = req.params.id;
         let endereco = req.body;

@@ -10,7 +10,7 @@ export async function validarLogin (login) {
         return resposta[0].insertId; 
 }
 
-export async function  consultarPedidos() {
+export async function  consultarLogin() {
     const comando = `
     select email  email,
     senha  senha
@@ -23,7 +23,19 @@ export async function  consultarPedidos() {
         return registros;
 }
 
-export async function removerPedido(id) {
+export async function  consultarLoginPorId() {
+    const comando = `
+    select id_login  id
+    from login;
+       `;
+
+       let resposta = await con.query(comando);
+       let registros = resposta[0];
+
+        return registros;
+}
+
+export async function removerLogin(id) {
     const comando = `
     delete from login
         where id_login = ?;
@@ -36,7 +48,7 @@ export async function removerPedido(id) {
     
 }
 
-export async function alterarPedido(id, login) {
+export async function alterarLogin(id, login) {
     const comando =`
     update login
         set email = ?,

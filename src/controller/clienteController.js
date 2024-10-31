@@ -1,30 +1,31 @@
 import * as db from '../repository/clienteRepository.js';
 import { Router } from "express";
 
-import { autenticar } from '../utils/jwt.js';
-
+import { gerarToken } from '../utils/jwt.js';
 
 const endpoints = Router();
 
-
-endpoints.post('/clientes', autenticar, async (req, resp) => {
+endpoints.post('/clientes', async (req, resp) => {
     try {
         let clientes = req.body;
-        clientes.idUsuario = req.user.id;
 
-        let id = await db.inserirclientes(clientes);
+        let id = await db.validarCliente(clientes);
 
-        resp.status(201).send({
-            novoId: id
-        });
-    } catch (err) {
+        if (id == null) {
+            let token = gerarToken(id);
+            resp.send({
+                "token": token
+            })
+        }
+    } 
+    catch (err) {
         resp.status(400).send({
             erro: err.message
         });
     }
 });
 
-endpoints.get ('/clientes', autenticar, async (req, resp) => {
+endpoints.get ('/clientes', async (req, resp) => {
     try {
         let idUsuario = req.user.id;
         let clientes = await db.consultarClientes(idUsuario);
@@ -37,7 +38,7 @@ endpoints.get ('/clientes', autenticar, async (req, resp) => {
     }
 })
 
-endpoints.delete('/clientes/:id', autenticar, async (req, resp) => {
+endpoints.delete('/clientes/:id', async (req, resp) => {
     try {
         let id = req.params.id;
         let linha = await db.removerCliente(id);
@@ -55,7 +56,7 @@ endpoints.delete('/clientes/:id', autenticar, async (req, resp) => {
     }
 })
 
-endpoints.put ('/clientes/:id', autenticar, async (req, resp) => {
+endpoints.put ('/clientes/:id', async (req, resp) => {
     try {
         let id = req.params.id;
         let clientes = req.body;
