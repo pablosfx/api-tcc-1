@@ -2,18 +2,18 @@ create database tcc;
 use tcc;
 
 create table produtos (
-id_produto int primary key auto_increment,
-nm_produto varchar (100),
+idProduto int primary key auto_increment,
+nmProduto varchar (100),
 marca varchar (100),
 tamanho varchar (10),
 valor decimal (10, 2)
 );
 
-insert into produtos (nm_produto, marca, tamanho, valor)
-values (?,?,?,?);
+insert into produtos (nmProduto, marca, tamanho, valor)
+values (?, ?, ?, ?);
 
-select id_produto  produto,
-        nm_produto     nome,
+select idProduto  produto,
+        nmProduto     nome,
         marca          marca,
         tamanho        tamanho,
         valor          valor
@@ -23,53 +23,27 @@ select id_produto  produto,
         where id_produto = ?;
         
 		update produtos
-            set nm_produto = ?,
+            set nmProduto = ?,
             marca = ?,
             tamanho = ?,
             valor = ?
-            where id_produto = ?;
-
-create table clientes (
-id_cliente int primary key auto_increment,
-nm_cliente varchar(100),
-telefone varchar(100)
-);
-
-insert into clientes (nm_cliente, telefone)
-values  (?, ?);
-
-select id_cliente id,
-       email  email,
-       senha  senha,
-       nm_cliente nome,
-       telefone  telefone
-    from clientes;
-    
-    delete from clientes
-        where id_cliente = ?;
-        
-        update clientes
-            set email  = ?,
-            senha = ?,
-            nm_cliente = ?,
-            telefone = ?
-            where id_cliente = ?;
+            where idProduto = ?;
         
 create table endereco (
-id_endereco int primary key auto_increment,
-id_cliente int,
+idEndereco int primary key auto_increment,
+idLogin int,
 pais varchar (100),
 estado varchar(100),
 cidade varchar(100),
 cep varchar (10),
-foreign key (id_cliente) references clientes(id_cliente)
+foreign key (idLogin) references login (idLogin)
 );
 
-insert into endereco (id_cliente, pais, estado, cidade, cep)
-values (?,?,?,?,?);
+insert into endereco (idLogin, pais, estado, cidade, cep)
+values (?, ?, ?, ?, ?);
 
-select id_endereco  endereco,
-        id_cliente      cliente,
+select  id_endereco  	endereco,
+		idLogin  		login,
         pais            pais,
         estado          estado,
         cidade          cidade,
@@ -88,106 +62,105 @@ select id_endereco  endereco,
             where id_endereco = ?;
 
 create table pedidos (
-id_pedido int primary key auto_increment,
-id_cliente int,
-id_produto int,
-id_endereco int,
-id_login int,
-data_pedido date,
-foreign key (id_cliente) references clientes(id_cliente),
-foreign key (id_produto) references produtos(id_produto),
-foreign key (id_endereco) references endereco(id_endereco),
-foreign key (id_login) references login(id_login)
+idPedido int primary key auto_increment,
+idProduto int,
+idEndereco int,
+idLogin int,
+dataPedido date,
+foreign key (idProduto) references produtos(idProduto),
+foreign key (idEndereco) references endereco(idEndereco),
+foreign key (idLogin) references login(idLogin)
 );
 
-insert into pedidos (id_cliente, id_produto, id_endereco, data_pedido)
-	values (?,?,?,?);
+insert into pedidos (idProduto, idEndereco, idLogin, dataPedido)
+	values (?, ?, ?, ?);
 
-select id_pedido  pedido,
-        id_cliente    cliente,
-        id_produto    produto,
-        id_endereco   endereco,
-        data_pedido   data
+select idPedido  pedido,
+        idProduto    produto,
+        idEndereco   endereco,
+        idLogin  login,
+        dataPedido   data
     from pedidos;
     
     delete from pedidos
         where id_pedido = ?;
         
          update pedidos
-            set id_cliente  = ?,
-            id_produto = ?,
-            id_endereco = ?,
-            data_pedido = ?
-            where id_pedido = ?;
+            set idProduto = ?,
+            idEndereco = ?,
+            idLogin = ?,
+            dataPedido = ?
+            where idPedido = ?;
             
             select * from pedidos;
             
+create table login (
+idLogin int primary key auto_increment,
+Usuario varchar (255),
+Senha varchar (255)
+);
+        
+insert into login (Usuario, Senha)
+values (?, ?);
             
-            create table login (
-            id_login int primary key auto_increment,
-            email varchar (255),
-            senha varchar (255)
-            );
-            
-            insert into login (email, senha)
-            values (?, ?);
-            
-            
-            select email  email,
-    senha  senha
-    from login;
+select Usuario  usuario,
+	   Senha  senha
+	   from login;
     
-    select id_login  id
+    select idLogin  id,
+    Usuario  usuario,
+    Senha  senha
     from login;
     
       delete from login
-        where id_login = ?;
+        where idLogin = ?;
         
         update login
-        set email = ?,
-            senha = ?
-            where id_login = ?;
-            
-insert into pesquisa (id_produto, id_pedido)
-values (?, ?);
+        set Usuario = ?,
+            Senha = ?
+		where idLogin = ?;
 
-  select id_pesquisa  pesquisa,
-	   id_produto   produto,
-       id_pedido    pedido
+create table pesquisa (
+idPesquisa int primary key auto_increment,
+idProduto int,
+foreign key (idProduto) references produtos (idProduto)
+);
+            
+insert into pesquisa (idProduto)
+values (?);
+
+  select idPesquisa  pesquisa,
+	   idProduto   	 produto
        from pesquisa; 
        
 delete from pesquisa
-	        where id_pesquisa = ?;
+	        where idPesquisa = ?;
             
 update pesquisa
-            set id_produto = ?,
-		        id_pedido = ?
-          where id_pesquisa = ?;
+            set idProduto = ?
+          where idPesquisa = ?;
           
 create table carrinho (
 id int primary key auto_increment,
-id_cliente int,
-id_produto int,
-id_status int,
-data_criacao datetime,
+idProduto int,
+idStatus int,
+dataCriacao datetime,
 quantidade int,
-preco_unitario decimal (10, 2),
+precoUnitario decimal (10, 2),
 subtotal decimal (10, 2),
-foreign key (id_cliente) references clientes (id_cliente),
-foreign key (id_produto) references produtos (id_produto),
-foreign key (id_status) references status_produto (id_status)
+foreign key (idProduto) references produtos (idProduto),
+foreign key (idStatus) references statusProduto (idStatus)
 );
 
-insert into carrinho (id_cliente, id_produto, id_status, data_criacao, quantidade, preco_unitario, subtotal)
+insert into carrinho (idCliente, idProduto, idStatus, dataCriacao, quantidade, precoUnitario, subtotal)
 values (?, ?, ?, ?, ?, ?, ?);
 
 select id  id,
-		id_cliente  cliente,
-        id_produto  produto,
-        id_status  status,
-        data_criacao  criacao,
+        idProduto  produto,
+        idStatus  status,
+        dataCriacao  criacao,
         quantidade  quantidade,
-        preco_unitario  preco,
+        precoUnitario  preco,
         subtotal  subtotal
         from carrinho;
         
@@ -195,29 +168,28 @@ delete from carrinho
 where id = ?;
 
 update carrinho
-set id_cliente = ?,
-id_produto = ?,
-id_status = ?,
-data_criacao = ?,
+set idProduto = ?,
+idStatus = ?,
+dataCriacao = ?,
 quantidade = ?,
-preco_unitario = ?,
+precoUnitario = ?,
 subtotal = ?
 where id = ?;
 
-create table status_produto (
-id_status int primary key auto_increment,
+create table statusProduto (
+idStatus int primary key auto_increment,
 status varchar (50) unique not null
 );
 
-insert into status_produto (status) 
+insert into statusProduto (status) 
 values (?);
 
-select status  status_produto
-from status;
+select status  status
+from statusProduto;
 
-delete from status_produto
-where id_status = ?;
+delete from statusProduto
+where idStatus = ?;
 
-update status_produto
+update statusProduto
 set status = ?
-where id_status = ?;
+where idStatus = ?;
