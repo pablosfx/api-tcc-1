@@ -1,15 +1,14 @@
-import express from 'express';
 import { gerarToken } from '../utils/jwt.js';
 import * as db from '../repository/loginrepository.js';
-import { Router } from 'express';
+import { Router } from "express";
 
 const endpoints = Router();
 
-endpoints.use(express.json());
 
 endpoints.post('/entrar/', async (req, resp) => {
     try {
         let pessoa = req.body;
+        console.log("Dados recebidos na entrada:", pessoa);
 
         let usuario = await db.validarLogin(pessoa);
 
@@ -18,9 +17,7 @@ endpoints.post('/entrar/', async (req, resp) => {
         }
 
         let token = gerarToken(usuario);
-        resp.send({ 
-            token 
-        });
+        resp.send({ token });
     } catch (err) {
         resp.status(400).send({ erro: err.message });
     }
@@ -29,14 +26,19 @@ endpoints.post('/entrar/', async (req, resp) => {
 endpoints.post('/login/', async (req, resp) => {
     try {
         let pessoa = req.body;
+        console.log("Dados recebidos para inserção:", pessoa);
 
-        let id = await db.inserirLogin(pessoa);
+        // Verifica se os dados necessários estão presentes
+        if (!pessoa.Usuario || !pessoa.Senha) {
+            return resp.status(400).send({ erro: "Usuário e senha são obrigatórios." });
+        }
 
-        resp.send({ 
-            novoId: id 
-        });
+        let id = await db.inserirUsuario(pessoa);
+        resp.send({ novoId: id });
     } catch (err) {
         console.error("Erro ao inserir usuário:", err);
         resp.status(400).send({ erro: err.message });
     }
 });
+
+export default endpoints;

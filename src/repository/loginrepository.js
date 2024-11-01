@@ -1,15 +1,18 @@
 import con from "./connection.js";
 import crypto from "crypto";
 
-export async function inserirLogin(pessoa) {
+export async function inserirUsuario(pessoa) {
+    if (!pessoa.Senha) {
+        throw new Error("A senha não pode ser vazia.");
+    }
+
     const comando = `
-        insert into login (Usuario, Senha) 
-        values (?, ?);
+        INSERT INTO login (Usuario, Senha) 
+        VALUES (?, ?)
     `;
 
     let hash = crypto.createHash('sha256').update(pessoa.Senha).digest('hex');
-    
-    console.log("Inserindo usuário:", pessoa.Usuario, hash); 
+    console.log("Inserindo usuário:", pessoa.Usuario, hash);
 
     let resposta = await con.query(comando, [pessoa.Usuario, hash]);
     let info = resposta[0];
@@ -19,23 +22,22 @@ export async function inserirLogin(pessoa) {
 
 export async function validarLogin(pessoa) {
     const comando = `
-      
-    select Usuario  usuario,
-           Senha  senha
-        from login;
+    SELECT Usuario, Senha
+    FROM login
+    WHERE Usuario = ?;
     `;
 
     try {
-        let registros = await con.query(comando, [pessoa.usuario]);
+        let registros = await con.query(comando, [pessoa.Usuario]);
 
         if (registros[0].length === 0) {
             throw new Error("Usuário não encontrado");
         }
 
         let usuario = registros[0][0];
-        let hash = crypto.createHash('sha256').update(pessoa.senha).digest('hex');
+        let hash = crypto.createHash('sha256').update(pessoa.Senha).digest('hex');
 
-        if (usuario.ds_senha !== hash) {
+        if (usuario.Senha !== hash) {
             throw new Error("Usuário ou senha incorreto(s)");
         }
 
