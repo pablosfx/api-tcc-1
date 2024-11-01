@@ -28,7 +28,6 @@ endpoints.post('/login/', async (req, resp) => {
         let pessoa = req.body;
         console.log("Dados recebidos para inserção:", pessoa);
 
-        // Verifica se os dados necessários estão presentes
         if (!pessoa.Usuario || !pessoa.Senha) {
             return resp.status(400).send({ erro: "Usuário e senha são obrigatórios." });
         }
