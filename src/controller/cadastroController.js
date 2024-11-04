@@ -1,16 +1,25 @@
 import * as db from '../repository/cadastroRepository.js';
 import { Router } from "express";
+import jwt from "jsonwebtoken";
 
 const endpoints = Router();
+const SECRET_KEY = 'sua_chave_secreta';
 
 // Endpoint para criar um novo cadastro
 endpoints.post('/cadastro', async (req, resp) => {
     try {
         let cadastro = req.body;
+
+        // Insere o cadastro no banco de dados e obtém o ID
         let id = await db.inserircadastro(cadastro);
 
+        // Gera um token com o ID do usuário recém-cadastrado
+        const token = jwt.sign({ id: id }, SECRET_KEY, { expiresIn: '1h' });
+
+        // Retorna o ID e o token para o cliente
         resp.status(201).send({
-            novoId: id
+            novoId: id,
+            token: token
         });
     } catch (err) {
         resp.status(400).send({
@@ -18,6 +27,7 @@ endpoints.post('/cadastro', async (req, resp) => {
         });
     }
 });
+
 
 // Endpoint para consultar um cadastro específico pelo ID
 endpoints.get('/cadastro/:id', async (req, resp) => {

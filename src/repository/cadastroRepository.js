@@ -1,5 +1,7 @@
 import con from "./connection.js";
+import jwt from "jsonwebtoken";
 
+const SECRET_KEY = 'sua_chave_secreta';
 
 export async function inserircadastro(cadastro) {
     const comando = `
@@ -8,7 +10,12 @@ export async function inserircadastro(cadastro) {
     `;
     
     let resposta = await con.query(comando, [cadastro.nome, cadastro.email, cadastro.senha]);
-    return resposta[0].insertId; // Retorna o ID do usuário inserido
+    const userId = resposta[0].insertId;
+
+    // Gera o token para o usuário recém-cadastrado
+    const token = jwt.sign({ id: userId }, SECRET_KEY, { expiresIn: '1h' });
+
+    return { id: userId, token };
 }
 
 export async function consultarcadastro(id) {
