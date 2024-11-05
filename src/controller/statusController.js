@@ -12,24 +12,35 @@ endpoints.post('/status', async (req, resp) => {
     resp.status(201).send({
         novoId: id
     });
+
     } catch (err) {
+
         resp.status(404).send({
             erro: err.message
         })
+
     }
+
 });
 
 endpoints.get('/status', async (req, resp) => {
     try {
 
         let idStatus = req.user.id;
+
         let status = await db.consultarStatus(idStatus)
+
         resp.send(status);
-    } catch (err) {
+    } 
+    
+    catch (err) {
+
         resp.status(400).send ({
             erro: err.message
         })
+
     }
+
 });
 
 endpoints.put('/status/:id', async (req, resp) => {
@@ -41,15 +52,25 @@ endpoints.put('/status/:id', async (req, resp) => {
         let linhas = await db.alterarStatus (id, status);
     
         if (linhas >= 1) {
+
             resp.send();
+
         }
         else {
-            resp.status(404).send({ erro: 'Nenhum registro encontrado'})
+
+            resp.status(404).send({ 
+                erro: 'Nenhum registro encontrado'
+            })
+
         } 
-    } catch (erro) {
+    } 
+    
+    catch (erro) {
+
             resp.status(400).send ({
                 erro: erro.message
             })
+
         }
 });
 
@@ -60,15 +81,25 @@ endpoints.delete('/status/:id', async (req, resp) => {
         let linha = await db.removerStatus(id);
 
         if(linha >= 1){
+
             resp.send();
+
         }
         else{
-            resp.status(404).send({erro: 'Nenhum registro encontrado'})
+
+            resp.status(404).send({
+                erro: 'Nenhum registro encontrado'
+            })
+
         }
-    }   catch(err){
+    }   
+    
+    catch(err){
+
             resp.status(400).send({
                 erro: err.message
             })
+            
         }
 });
 

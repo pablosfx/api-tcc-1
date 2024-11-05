@@ -41,7 +41,9 @@ endpoints.delete('/pesquisa/:id', async (req, resp) => {
         }
         
         else{
-            resp.status(404).send({erro: 'Nenhum registro encontrado'})
+            resp.status(404).send({
+                erro: 'Nenhum registro encontrado'
+            })
         }
     }
     catch(err){
@@ -61,7 +63,9 @@ endpoints.put ('/pesquisa/:id', async (req, resp) => {
             resp.send();
         }
         else {
-            resp.status(404).send({ erro: 'Nenhum registro encontrado'})
+            resp.status(404).send({ 
+                erro: 'Nenhum registro encontrado'
+            })
         }
     }
         catch (erro) {

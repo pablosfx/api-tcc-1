@@ -12,7 +12,7 @@ export async function inserircadastro(cadastro) {
     let resposta = await con.query(comando, [cadastro.nome, cadastro.email, cadastro.senha]);
     const userId = resposta[0].insertId;
 
-    // Gera o token para o usuário recém-cadastrado
+    
     const token = jwt.sign({ id: userId }, SECRET_KEY, { expiresIn: '1h' });
 
     return { id: userId, token };
@@ -23,8 +23,8 @@ export async function consultarcadastro(id) {
         SELECT * FROM usuarios WHERE id_cliente = ?;
     `;
     
-    let resposta = await con.query(comando, [id]); // Passa o ID como parâmetro
-    return resposta[0]; // Retorna o registro encontrado
+    let resposta = await con.query(comando, [id]); 
+    return resposta[0]; 
 }
 
 export async function removercadastro(id) {
@@ -34,7 +34,7 @@ export async function removercadastro(id) {
     `;
 
     let resposta = await con.query(comando, [id]);
-    return resposta[0].affectedRows; // Retorna o número de linhas afetadas
+    return resposta[0].affectedRows; 
 }
 
 
@@ -46,5 +46,5 @@ export async function alterarcadastro(id, cadastro) {
     `;
 
     let resposta = await con.query(comando, [cadastro.nome, cadastro.email, cadastro.senha, id]);
-    return resposta[0].affectedRows; // Retorna o número de linhas afetadas
+    return resposta[0].affectedRows; 
 }
