@@ -4,14 +4,12 @@ import bcrypt from "bcryptjs";
 
 const SECRET_KEY = 'sua_chave_secreta';
 
-// Função de Cadastro (armazena a senha hash)
 export async function inserircadastro(cadastro) {
     const comando = `
         INSERT INTO usuarios (nome, email, senha) 
         VALUES (?, ?, ?);
     `;
     
-    // Hash da senha para segurança
     const hashedPassword = await bcrypt.hash(cadastro.senha, 10);
 
     let resposta;
@@ -19,7 +17,6 @@ export async function inserircadastro(cadastro) {
         resposta = await con.query(comando, [cadastro.nome, cadastro.email, hashedPassword]);
         const userId = resposta[0].insertId;
 
-        // Retorna apenas o ID do usuário
         return { id: userId };
     } catch (error) {
         console.error("Erro ao inserir cadastro:", error);
@@ -27,7 +24,6 @@ export async function inserircadastro(cadastro) {
     }
 }
 
-// Função de Login (gera o token JWT após autenticação)
 export async function login(email, senha) {
     const comando = `
         SELECT id_cliente, senha FROM usuarios WHERE email = ?;
@@ -42,17 +38,14 @@ export async function login(email, senha) {
 
         const user = resultado[0];
 
-        // Verifica a senha usando bcrypt
         const senhaCorreta = await bcrypt.compare(senha, user.senha);
         
         if (!senhaCorreta) {
             throw new Error("Senha incorreta");
         }
 
-        // Geração do token JWT
         const token = jwt.sign({ id: user.id_cliente }, SECRET_KEY, { expiresIn: '1h' });
 
-        // Retorna o token e o ID do usuário
         return { id: user.id_cliente, token };
     } catch (error) {
         console.error("Erro no login:", error);
@@ -60,7 +53,6 @@ export async function login(email, senha) {
     }
 }
 
-// Outras funções (consultar, remover, alterar) permanecem as mesmas
 export async function consultarcadastro(id) {
     const comando = `
         SELECT * FROM usuarios WHERE id_cliente = ?;
@@ -97,7 +89,6 @@ export async function alterarcadastro(id, cadastro) {
         WHERE id_cliente = ?;
     `;
 
-    // Hash da nova senha
     const hashedPassword = await bcrypt.hash(cadastro.senha, 10);
 
     try {
