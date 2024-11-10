@@ -1,6 +1,6 @@
-import * as db from '../repository/cadastroRepository.js';
-import { Router } from "express";
-import jwt from "jsonwebtoken";
+import * as db from '../repository/cadastroRepository.js'
+import { Router } from "express"
+import jwt from "jsonwebtoken"
 
 const endpoints = Router();
 const SECRET_KEY = 'sua_chave_secreta';
@@ -9,16 +9,10 @@ endpoints.post('/cadastro', async (req, resp) => {
     try {
         let cadastro = req.body;
 
-        
-        let id = await db.inserircadastro(cadastro);
+        let resultado = await db.inserircadastro(cadastro);
 
-        
-        const token = jwt.sign({ id: id }, SECRET_KEY, { expiresIn: '1h' });
-
-        
         resp.status(201).send({
-            novoId: id,
-            token: token
+            novoId: resultado.id
         });
     } catch (err) {
         resp.status(400).send({
@@ -27,6 +21,22 @@ endpoints.post('/cadastro', async (req, resp) => {
     }
 });
 
+endpoints.post('/login', async (req, resp) => {
+    try {
+        const { email, senha } = req.body;
+        
+        const resultado = await db.login(email, senha);
+
+        resp.status(200).send({
+            id: resultado.id,
+            token: resultado.token
+        });
+    } catch (err) {
+        resp.status(401).send({
+            erro: err.message
+        });
+    }
+});
 
 endpoints.get('/cadastro/:id', async (req, resp) => {
     try {
