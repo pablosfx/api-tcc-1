@@ -6,8 +6,8 @@ const SECRET_KEY = 'sua_chave_secreta';
 
 export async function inserircadastro(cadastro) {
     const comando = `
-        INSERT INTO usuarios (nome, email, senha) 
-        VALUES (?, ?, ?);
+        insert into usuarios (nome, email, senha) 
+        values (?, ?, ?);
     `;
     
     const hashedPassword = await bcrypt.hash(cadastro.senha, 10);
@@ -26,7 +26,7 @@ export async function inserircadastro(cadastro) {
 
 export async function login(email, senha) {
     const comando = `
-        SELECT id_cliente, senha FROM usuarios WHERE email = ?;
+        select id_cliente, senha from usuarios where email = ?;
     `;
 
     try {
@@ -55,7 +55,7 @@ export async function login(email, senha) {
 
 export async function consultarcadastro(id) {
     const comando = `
-        SELECT * FROM usuarios WHERE id_cliente = ?;
+        select * from usuarios where id_cliente = ?;
     `;
 
     try {
@@ -69,8 +69,8 @@ export async function consultarcadastro(id) {
 
 export async function removercadastro(id) {
     const comando = `
-        DELETE FROM usuarios
-        WHERE id_cliente = ?;
+        delete from usuarios
+        where id_cliente = ?;
     `;
 
     try {
@@ -84,9 +84,9 @@ export async function removercadastro(id) {
 
 export async function alterarcadastro(id, cadastro) {
     const comando = `
-        UPDATE usuarios 
-        SET nome = ?, email = ?, senha = ? 
-        WHERE id_cliente = ?;
+        update usuarios 
+        set nome = ?, email = ?, senha = ? 
+        where id_cliente = ?;
     `;
 
     const hashedPassword = await bcrypt.hash(cadastro.senha, 10);
