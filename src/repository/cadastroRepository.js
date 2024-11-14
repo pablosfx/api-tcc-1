@@ -26,7 +26,7 @@ export async function inserircadastro(cadastro) {
 
 export async function login(email, senha) {
     const comando = `
-        select id_cliente, senha from usuarios where email = ?;
+        select idcliente, senha from usuarios where email = ?;
     `;
 
     try {
@@ -44,9 +44,9 @@ export async function login(email, senha) {
             throw new Error("Senha incorreta");
         }
 
-        const token = jwt.sign({ id: user.id_cliente }, SECRET_KEY, { expiresIn: '1h' });
+        const token = jwt.sign({ id: user.idcliente }, SECRET_KEY, { expiresIn: '1h' });
 
-        return { id: user.id_cliente, token };
+        return { id: user.idcliente, token };
     } catch (error) {
         console.error("Erro no login:", error);
         throw error;
@@ -55,7 +55,7 @@ export async function login(email, senha) {
 
 export async function consultarcadastro(id) {
     const comando = `
-        select * from usuarios where id_cliente = ?;
+        select * from usuarios where idcliente = ?;
     `;
 
     try {
@@ -70,7 +70,7 @@ export async function consultarcadastro(id) {
 export async function removercadastro(id) {
     const comando = `
         delete from usuarios
-        where id_cliente = ?;
+        where idcliente = ?;
     `;
 
     try {
@@ -86,7 +86,7 @@ export async function alterarcadastro(id, cadastro) {
     const comando = `
         update usuarios 
         set nome = ?, email = ?, senha = ? 
-        where id_cliente = ?;
+        where idcliente = ?;
     `;
 
     const hashedPassword = await bcrypt.hash(cadastro.senha, 10);
