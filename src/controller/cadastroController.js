@@ -5,7 +5,6 @@ import jwt from "jsonwebtoken";
 const endpoints = Router();
 const SECRET_KEY = 'sua_chave_secreta';
 
-// Middleware para autenticação com JWT
 function authenticateToken(req, resp, next) {
     const token = req.headers['authorization'];
     if (!token) return resp.status(401).send({ erro: 'Token não fornecido' });
@@ -17,7 +16,6 @@ function authenticateToken(req, resp, next) {
     });
 }
 
-// Endpoint para cadastro de usuário
 endpoints.post('/cadastro', async (req, resp) => {
     try {
         let cadastro = req.body;
@@ -28,7 +26,6 @@ endpoints.post('/cadastro', async (req, resp) => {
     }
 });
 
-// Endpoint para login
 endpoints.post('/login', async (req, resp) => {
     try {
         const { email, senha } = req.body;
@@ -44,7 +41,6 @@ endpoints.post('/login', async (req, resp) => {
     }
 });
 
-// Endpoint para consultar cadastro, protegido com JWT
 endpoints.get('/cadastro/:id', authenticateToken, async (req, resp) => {
     try {
         let id = req.params.id;
@@ -74,7 +70,6 @@ endpoints.delete('/cadastro/:id', authenticateToken, async (req, resp) => {
     }
 });
 
-// Endpoint para atualizar cadastro
 endpoints.put('/cadastro/:id', authenticateToken, async (req, resp) => {
     try {
         let id = req.params.id;
